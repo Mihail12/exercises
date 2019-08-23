@@ -15,7 +15,6 @@ hint = [
     ['w', 't', 'u', 'k', 'z', 'x', 'n', 'b', 'r', 'y', 'h', 'j', 'q', 'g', 'o'],
     ['w', 't', 'c', 'l', 'u', 'k', 'n', 'a', 'y', 'h', 'e', 'j', 'q', 'p', 'o'],
 ]
-# hint_with_count = [[{letter: count} for count, letter in enumerate(arr)] for arr in hint]
 
 skeleton = hint[0]
 for arr in hint[1:]:
@@ -23,7 +22,12 @@ for arr in hint[1:]:
     for letter in arr:
         if letter in skeleton:
             last_index = skeleton.index(letter) + 1
-        if letter not in skeleton:
+            continue
+        first, last = letter, skeleton[last_index]
+        existing_letter_rows = [ar for ar in hint if first in ar and last in ar]
+        letters_in_order = [{l: count} for count, l in enumerate(existing_letter_rows[0]) if first == l or last == l]
+
+        if first == list(letters_in_order[0].keys())[0]:
             skeleton = skeleton[:last_index] + [letter] + skeleton[last_index:]
             last_index += 1
 
